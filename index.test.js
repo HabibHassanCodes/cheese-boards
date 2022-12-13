@@ -37,4 +37,14 @@ test("user to board association ont to many", async() =>{
 
      expect(userHabibBoards.length).toBe(2)
 })
+
+test("board to cheese many to many association", async () => {
+    const american = await Cheese.create({title:"american", description:"sharp"});
+    const pepperjack = await Cheese.create({title:"pepperjack", description:"not sharp"});
+    const wood = await Board.create({})
+    await wood.addCheeses([american, pepperjack]);
+    const woodenBoardCheese = await wood.getCheeses();
+    expect(woodenBoardCheese[0].title).toBe("american");
+    expect(woodenBoardCheese[1].description).toBe("not sharp")
+})
 })
