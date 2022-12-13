@@ -41,10 +41,19 @@ test("user to board association ont to many", async() =>{
 test("board to cheese many to many association", async () => {
     const american = await Cheese.create({title:"american", description:"sharp"});
     const pepperjack = await Cheese.create({title:"pepperjack", description:"not sharp"});
-    const wood = await Board.create({})
+    const wood = await Board.create({type:"wooden", description: "brown", rating:0})
+    const glass = await Board.create({type:"glass", description: "clear", rating:0})
+
     await wood.addCheeses([american, pepperjack]);
     const woodenBoardCheese = await wood.getCheeses();
+
+    await glass.addCheese(american);
+    const cheeseAndBoards = await american.getBoards();
+
     expect(woodenBoardCheese[0].title).toBe("american");
     expect(woodenBoardCheese[1].description).toBe("not sharp")
+    expect(cheeseAndBoards[0].type).toBe("wooden")
+    expect(cheeseAndBoards[1].type).toBe("glass")
+
 })
 })
